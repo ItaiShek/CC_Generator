@@ -3,7 +3,7 @@
 [![](https://img.shields.io/github/v/release/ItaiShek/CC_Generator)](https://github.com/ItaiShek/CC_Generator/releases)
 [![](https://img.shields.io/github/downloads/ItaiShek/CC_Generator/total?logo=GitHub&logoColor=violet)](https://github.com/ItaiShek/CC_Generator/archive/refs/heads/main.zip)
 [![](https://img.shields.io/github/issues/ItaiShek/CC_Generator?color=yellow)](https://github.com/ItaiShek/CC_Generator/issues)
-[![](https://img.shields.io/github/license/ItaiShek/CC_Generator?color=green)](https://github.com/ItaiShek/CC_Generator/blob/main/LICENSE)
+[![](https://img.shields.io/github/license/ItaiShek/CC_Generator?label=license&color=green)](https://github.com/ItaiShek/CC_Generator/blob/main/LICENSE)
 
 # Description
 
