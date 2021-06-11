@@ -5,6 +5,7 @@
 !.gitignore
 !main.c
 !Makefile
+!images/*
 !images
 !README.md
 !LICENSE
