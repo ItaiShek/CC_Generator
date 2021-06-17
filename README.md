@@ -1,7 +1,6 @@
 <!-- Badges -->
 ![](https://img.shields.io/maintenance/yes/2021)
 [![](https://img.shields.io/github/v/release/ItaiShek/CC_Generator)](https://github.com/ItaiShek/CC_Generator/releases)
-[![](https://img.shields.io/github/downloads/ItaiShek/CC_Generator/total?logo=GitHub&logoColor=violet)](https://github.com/ItaiShek/CC_Generator/archive/refs/heads/main.zip)
 [![](https://img.shields.io/github/issues/ItaiShek/CC_Generator?color=yellow)](https://github.com/ItaiShek/CC_Generator/issues)
 [![](https://img.shields.io/github/license/ItaiShek/CC_Generator?label=license&color=green)](https://github.com/ItaiShek/CC_Generator/blob/main/LICENSE)
 
@@ -39,6 +38,41 @@ These credit cards are for educational and data testing purposes only.
 
 I will not take **any responsability** for damages that arise of misusing CC_Generator.
 
+## Available issuers
+
+* Visa
+* MasterCard
+* American Express
+* Visa Electron
+* China UnionPay
+* Maestro
+* Maestro UK
+* Diners Club International
+* Diners Club US & Ca
+* Diners Club enRoute
+* Diners Club Carte Blanche
+* Discover
+* Interpayment
+* Intstapayment
+* JCB
+* Dankort
+* UATP
+* Bankcard
+* China T-Union
+* RuPay
+* Laser
+* Solo
+* Ca Imperial Bank of Commerce
+* Royal Bank of Canada
+* TD Canada Trust
+* Scotiabank
+* BMO
+* HSBC Bank Canada
+* MIR
+* NPS Pridnestrovie
+* Troy
+* Verve
+* LankaPay
 
 ## License
 [GNU GPL 3.0](https://choosealicense.com/licenses/gpl-3.0/)
