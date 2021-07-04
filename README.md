@@ -1,6 +1,7 @@
 <!-- Badges -->
 ![](https://img.shields.io/maintenance/yes/2021)
 [![](https://img.shields.io/github/v/release/ItaiShek/CC_Generator)](https://github.com/ItaiShek/CC_Generator/releases)
+![](https://img.shields.io/github/downloads/ItaiShek/CC_Generator/total?color=red)
 [![](https://img.shields.io/github/issues/ItaiShek/CC_Generator?color=yellow)](https://github.com/ItaiShek/CC_Generator/issues)
 [![](https://img.shields.io/github/license/ItaiShek/CC_Generator?label=license&color=green)](https://github.com/ItaiShek/CC_Generator/blob/main/LICENSE)
 
