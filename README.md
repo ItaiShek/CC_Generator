@@ -19,12 +19,31 @@ CC_Generator has an easy to use options menu, just a few clicks and your'e done.
 
 ## Installation
 
+#### Method 1: Clone repository
+
 ```bash
 git clone https://github.com/ItaiShek/CC_Generator.git && cd CC_Generator
 make
 ```
 
-<br>
+#### Method 2: Using curl 
+
+```bash
+sudo curl -L https://github.com/ItaiShek/CC_Generator/releases/download/v1.0/CC_Generator -o /usr/local/bin/CC_Generator
+sudo chmod a+rx /usr/local/bin/CC_Generator
+```
+
+#### Method 3: Using wget
+
+```bash
+sudo wget https://github.com/ItaiShek/CC_Generator/releases/download/v1.0/CC_Generator -O /usr/local/bin/CC_Generator
+sudo chmod a+rx /usr/local/bin/CC_Generator
+```
+
+#### Method 4: Direct download
+
+Just download it from [here](https://github.com/ItaiShek/CC_Generator/releases/download/v1.0/CC_Generator).
+
 
 ## Disclaimer
 
