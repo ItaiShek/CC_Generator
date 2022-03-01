@@ -23,7 +23,7 @@ CC_Generator has an easy to use options menu, just a few clicks and your'e done.
 #### Method 1: Clone repository
 
 ```bash
-git clone https://github.com/ItaiShek/CC_Generator.git && cd CC_Generator
+git clone https://github.com/ItaiShek/CC_Generator.git && cd CC_Generator/src
 make
 ```
 
