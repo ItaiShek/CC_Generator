@@ -23,4 +23,4 @@ $(NAME): $(OBJ)
 .PHONY: clean
 
 clean:
-	rm -f CC_Generator *.o
+	rm -f $(NAME) $(OBJ)
