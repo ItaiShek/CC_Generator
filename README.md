@@ -1,5 +1,4 @@
 <!-- Badges -->
-![](https://img.shields.io/maintenance/yes/2021)
 [![](https://img.shields.io/github/v/release/ItaiShek/CC_Generator)](https://github.com/ItaiShek/CC_Generator/releases)
 ![](https://img.shields.io/github/downloads/ItaiShek/CC_Generator/total?color=red)
 [![](https://img.shields.io/github/issues/ItaiShek/CC_Generator?color=yellow)](https://github.com/ItaiShek/CC_Generator/issues)
@@ -7,47 +6,34 @@
 
 # Description
 
-<p style="text-align: left">
 Generate a bunch of random credit card numbers quick and easy.
-<img src="/images/CC_Generator.gif" alt="CC_Generator" align="right" style="margin: 15px;" width="500"></img>
 
-CC_Generator has 33 different credit card issuers, and can generate up to a billion numbers at a time.
+![GUI](images/GUI.gif "GUI")
 
-CC_Generator has an easy to use options menu, just a few clicks and your'e done.
-</p>
-
-<br>
+![Console](images/Console.gif "Console")
 
 ## Installation
 
-#### Method 1: Clone repository
+### Windows:
+[x64](https://github.com/ItaiShek/CC_Generator/releases/latest/download/win_x64.zip), [x86](https://github.com/ItaiShek/CC_Generator/releases/latest/download/win_x86.zip)
 
-```bash
-git clone https://github.com/ItaiShek/CC_Generator.git && cd CC_Generator/src
-make
-```
+### Linux:
+[x64](https://github.com/ItaiShek/CC_Generator/releases/latest/download/linux_x64.zip)
 
-#### Method 2: Using curl 
+### Compilation:
+* For windows: open the solution file with visual studio and compile.
+* For linux: open the terminal in the repo's directory and run `make`.
 
-```bash
-sudo curl -L https://github.com/ItaiShek/CC_Generator/releases/download/v1.0/CC_Generator -o /usr/local/bin/CC_Generator
-sudo chmod a+rx /usr/local/bin/CC_Generator
-```
+#### Note
+The GUI and console files are loaded dynamically, so the terminal stays open for both of them. If you want a fully GUI/Console version you'll need to change the main file to load one of them and make a standalone executable.
 
-#### Method 3: Using wget
+## Usage
+* GUI: run the application.
+* Console: `CC_Generator --console`
 
-```bash
-sudo wget https://github.com/ItaiShek/CC_Generator/releases/download/v1.0/CC_Generator -O /usr/local/bin/CC_Generator
-sudo chmod a+rx /usr/local/bin/CC_Generator
-```
-
-#### Method 4: Direct download
-
-Just download it from [here](https://github.com/ItaiShek/CC_Generator/releases/download/v1.0/CC_Generator).
-
+Just follow the steps...
 
 ## Disclaimer
-
 Every credit card that is generated with CC_Generator is **random and fake** and do not hold any value.
 
 Credit card numbers that are generated with CC_Generator follows luhn algorithm for validating identification numbers 
@@ -56,43 +42,4 @@ These credit cards are **not** to be used for harming or deceiving people.
 
 These credit cards are for educational and data testing purposes only.
 
-I will not take **any responsability** for damages that arise of misusing CC_Generator.
-
-## Available issuers
-
-* Visa
-* MasterCard
-* American Express
-* Visa Electron
-* China UnionPay
-* Maestro
-* Maestro UK
-* Diners Club International
-* Diners Club US & Ca
-* Diners Club enRoute
-* Diners Club Carte Blanche
-* Discover
-* Interpayment
-* Intstapayment
-* JCB
-* Dankort
-* UATP
-* Bankcard
-* China T-Union
-* RuPay
-* Laser
-* Solo
-* Ca Imperial Bank of Commerce
-* Royal Bank of Canada
-* TD Canada Trust
-* Scotiabank
-* BMO
-* HSBC Bank Canada
-* MIR
-* NPS Pridnestrovie
-* Troy
-* Verve
-* LankaPay
-
-## License
-[GNU GPL 3.0](https://choosealicense.com/licenses/gpl-3.0/)
+I will not take **any responsibility** for damages that arise of misusing CC_Generator.

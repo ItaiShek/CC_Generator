@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{954bdb50-0c2e-4252-8c5d-35630aa01e5d}</ProjectGuid>
+    <RootNamespace>GUI</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)API;$(ProjectDir)Dependencies\imgui-1.89.9;$(ProjectDir)Dependencies\glew-2.1.0\include;$(ProjectDir)Dependencies\glfw-3.3.8\include;$(ProjectDir)Dependencies\ImGuiFileDialog</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)API;$(ProjectDir)Dependencies\imgui-1.89.9;$(ProjectDir)Dependencies\glew-2.1.0\include;$(ProjectDir)Dependencies\glfw-3.3.8\include;$(ProjectDir)Dependencies\ImGuiFileDialog</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)API;$(ProjectDir)Dependencies\imgui-1.89.9;$(ProjectDir)Dependencies\glew-2.1.0\include;$(ProjectDir)Dependencies\glfw-3.3.8\include;$(ProjectDir)Dependencies\ImGuiFileDialog</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)API;$(ProjectDir)Dependencies\imgui-1.89.9;$(ProjectDir)Dependencies\glew-2.1.0\include;$(ProjectDir)Dependencies\glfw-3.3.8\include;$(ProjectDir)Dependencies\ImGuiFileDialog</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\egl_context.h" />
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\internal.h" />
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\osmesa_context.h" />
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\wgl_context.h" />
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\win32_joystick.h" />
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\win32_platform.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imconfig.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_impl_glfw.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_impl_opengl3.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_internal.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imstb_rectpack.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imstb_textedit.h" />
+    <ClInclude Include="Dependencies\imgui-1.89.9\imstb_truetype.h" />
+    <ClInclude Include="GUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\context.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\egl_context.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\init.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\input.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\monitor.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\osmesa_context.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\vulkan.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\wgl_context.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_init.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_joystick.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_monitor.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_thread.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_time.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_window.c" />
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\window.c" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_demo.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_draw.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_tables.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\imgui-1.89.9\misc\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.cpp" />
+    <ClCompile Include="GUI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\API\API.vcxproj">
+      <Project>{1703fb92-5e00-4565-8385-cacbfbe7fa18}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

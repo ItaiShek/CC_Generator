@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DearImGUI">
+      <UniqueIdentifier>{8888e3a3-728f-4471-9482-380d514b11ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GLFW">
+      <UniqueIdentifier>{4a5d0db5-c0cd-490a-93da-7fa9d4eb24ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGuiFileDialog">
+      <UniqueIdentifier>{cd7ffa68-8562-4b32-847a-2a3150409e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DearImGUI\misc">
+      <UniqueIdentifier>{0976b208-18f2-4e17-993c-41b9a07e3527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{d1027324-5f40-4402-be8e-484489dcfa45}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_internal.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imstb_rectpack.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imstb_textedit.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imstb_truetype.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imconfig.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_impl_glfw.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_impl_opengl3.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-1.89.9\imgui_impl_opengl3_loader.h">
+      <Filter>DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\win32_joystick.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\win32_platform.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\wgl_context.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\internal.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\osmesa_context.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\glfw-3.3.8\src\egl_context.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_demo.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_draw.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_impl_glfw.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_impl_opengl3.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_tables.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\imgui_widgets.cpp">
+      <Filter>DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_init.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_joystick.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_monitor.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_thread.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_time.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\win32_window.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\window.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\wgl_context.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\input.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\init.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\monitor.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\vulkan.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\context.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\osmesa_context.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\glfw-3.3.8\src\egl_context.c">
+      <Filter>GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.cpp">
+      <Filter>ImGuiFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-1.89.9\misc\cpp\imgui_stdlib.cpp">
+      <Filter>DearImGUI\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

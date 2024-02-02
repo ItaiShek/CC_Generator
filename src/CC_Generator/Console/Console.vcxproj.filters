@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="PDCurses">
+      <UniqueIdentifier>{4679ecbe-2876-4a02-bf88-fd6b8975636e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Console">
+      <UniqueIdentifier>{3da06e9b-83d3-468c-a5dc-9188d0a3d692}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdcutil.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdcsetsc.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdcscrn.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdckbd.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdcgetsc.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdcdisp.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\wincon\pdcclip.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\addch.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\addchstr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\addstr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\attr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\beep.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\bkgd.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\border.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\clear.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\color.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\debug.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\delch.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\deleteln.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\getch.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\getstr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\getyx.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\inch.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\inchstr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\initscr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\inopts.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\insch.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\insstr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\instr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\kernel.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\keyname.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\mouse.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\move.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\outopts.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\overlay.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\pad.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\panel.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\printw.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\refresh.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\scanw.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\scr_dump.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\scroll.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\slk.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\termattr.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\touch.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\util.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PDCurses-3.9\pdcurses\window.c">
+      <Filter>PDCurses</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Console.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
