@@ -3,11 +3,8 @@ CXX := g++ -std=c++14
 CFLAGS := -fPIC
 LDFLAGS := -lncurses -ldl -lsqlite3 -lGL -lX11 -L./LIB -lAPI
 GLFW_FLAGS := -D_GLFW_X11 -lGL -ldl
-#INCLUDES := -I./GUI/Dependencies/imgui-1.89.9 -I./GUI/Dependencies/glfw-3.3.8/include
-#INCLUDES := -I./GUI/Dependencies/imgui-1.89.9 -I./GUI/Dependencies/glfw-3.3.8/include -I./GUI/Dependencies/nfd/include 
-INCLUDES := -I./GUI/Dependencies/imgui-1.89.9 -I./GUI/Dependencies/glfw-3.3.8/include -I./GUI/Dependencies/ImGuiFileDialog
-#GTKFLAGS := `pkg-config --cflags --libs gtk+-3.0`
 
+INCLUDES := -I./GUI/Dependencies/imgui-1.89.9 -I./GUI/Dependencies/glfw-3.3.8/include -I./GUI/Dependencies/ImGuiFileDialog
 
 # Directories
 API_DIR := ./API
@@ -46,8 +43,6 @@ LIB_API := $(LIB_DIR)/libAPI.a
 .PHONY: all clean
 
 all: $(CC_GENERATOR) $(GUI_SO) $(CONSOLE_SO)
-# all:
-# 	@echo $(IMGUI_OBJ)
 
 clean:
 	@rm -rf $(LIB_DIR) $(OBJ_DIR) $(BIN_DIR)
@@ -72,21 +67,21 @@ $(LIB_API): $(API_OBJ)
 
 $(SQLITE_OBJ): $(SQLITE_SRC)
 	@mkdir -p $(@D)
-	gcc -c -o $@ $<
+	gcc -c -o $@ $< $(CFLAGS)
 
 # Console
 $(OBJ_DIR)/Console/%.o: $(CONSOLE_SRC) $(SQLITE_OBJ)
 	@mkdir -p $(@D)
 	$(CXX) $(CFLAGS) -I$(API_DIR) -c -o $@ $<
 
-$(CONSOLE_SO): $(CONSOLE_OBJ)
+$(CONSOLE_SO): $(CONSOLE_OBJ) $(SQLITE_OBJ)
 	@mkdir -p $(@D)
 	$(CXX) -shared -o $@ $^ $(LDFLAGS)
 
 # GUI
-$(GUI_SO): $(GUI_OBJ) $(IMGUI_OBJ) $(GLFW_OBJ)
+$(GUI_SO): $(GUI_OBJ) $(IMGUI_OBJ) $(GLFW_OBJ) $(SQLITE_OBJ)
 	@mkdir -p $(@D)
-	$(CXX) -shared -o $@ $^ $(LDFLAGS) $(GTKFLAGS) $(INCLUDES)
+	$(CXX) -shared -o $@ $^ $(LDFLAGS) $(INCLUDES)
  
 $(GLFW_OBJ_DIR)/%.o: $(GLFW_DIR)/%.c
 	@mkdir -p $(@D)
@@ -100,14 +95,10 @@ $(IMGUI_OBJ_DIR)/%.o: $(IMGUI_DIR)/misc/cpp/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CFLAGS) -IAPI -c -o $@ $^ $(INCLUDES)
 
-#$(OBJ_DIR)/GUI/%.o: ./GUI/%.cpp $(SQLITE_OBJ)
-#	@mkdir -p $(@D)
-#	$(CXX) $(CFLAGS) -IAPI -c -o $@ $< $(INCLUDES)
-
 $(OBJ_DIR)/GUI/%.o: ./GUI/%.cpp $(SQLITE_OBJ)
 	@mkdir -p $(@D)
-	$(CXX) $(CFLAGS) -IAPI -c -o $@ $< $(GTKFLAGS) $(INCLUDES)
+	$(CXX) $(CFLAGS) -IAPI -c -o $@ $< $(INCLUDES)
 
 $(OBJ_DIR)/GUI/%.o: ./GUI/Dependencies/ImGuiFileDialog/%.cpp $(SQLITE_OBJ)
 	@mkdir -p $(@D)
-	$(CXX) $(CFLAGS) -IAPI -c -o $@ $< $(GTKFLAGS) $(INCLUDES)
+	$(CXX) $(CFLAGS) -IAPI -c -o $@ $< $(INCLUDES)
