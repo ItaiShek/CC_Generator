@@ -6,7 +6,7 @@
 
 # Description
 
-Generate a bunch of random credit card numbers quick and easy.
+Generate a bunch of random credit card numbers quickly and easily.
 
 ![GUI](images/GUI.gif "GUI")
 
@@ -20,12 +20,16 @@ Generate a bunch of random credit card numbers quick and easy.
 [Linux](https://github.com/ItaiShek/CC_Generator/releases/latest/download/CC_Generator_linux.zip)
 
 ## Disclaimer
-Every credit card that is generated with CC_Generator is **random and fake** and do not hold any value.
 
-Credit card numbers that are generated with CC_Generator follows luhn algorithm for validating identification numbers
+Every credit card that is generated with CC_Generator is **random and fake** and does not hold any value.
+
+Credit card numbers that are generated with CC_Generator follow the Luhn algorithm for validating identification numbers.
 
 These credit cards are **not** to be used for harming or deceiving people.
 
 These credit cards are for educational and data testing purposes only.
 
-I will not take **any responsibility** for damages that arise of misusing CC_Generator.
+I will not take **any responsibility** for damages that arise from misusing CC_Generator.
+
+## Credits
+* Names: [GitHub Gist - Elifiner](https://gist.github.com/elifiner/cc90fdd387449158829515782936a9a4)
