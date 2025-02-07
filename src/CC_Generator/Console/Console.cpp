@@ -1,8 +1,10 @@
 #include "Console.h"
 
-extern std::atomic<bool> g_paused;
-extern std::atomic<bool> g_started;
-extern std::atomic<float> g_progress;
+std::mt19937 File::gen(std::random_device{}());
+
+std::atomic<bool> g_paused{ false };
+std::atomic<bool> g_started{ false };
+std::atomic<float> g_progress{ 0.0f };
 
 /**
  * @brief Compares two strings for equality, ignoring case differences.
@@ -37,7 +39,7 @@ inline bool console::internal::case_insensitive_equals(const std::string& input,
  * @param input The input string to be checked for the quit command.
  *
  * @return True if the input string represents a quit command, false otherwise.
- * 
+ *
  * @see console::internal::case_insensitive_equals(const std::string& input, const std::string& comp)
  */
 bool console::internal::check_quit(const std::string& input)
@@ -334,7 +336,7 @@ Card console::internal::add_card()
  * The function uses the provided Card object to extract issuer, length, and prefixes information.
  * It pads each string with spaces to match the maximum length and concatenates them.
  * The resulting string provides a visually aligned representation of the Card's attributes.
- * 
+ *
  * @param max_length The maximum length to pad each component of the Card.
  * @param card The Card object to generate a string representation for.
  * @return A formatted string representation of the Card.
@@ -469,7 +471,7 @@ int console::internal::choose_cards(std::shared_ptr<sqlite3> db, const std::stri
 		int ch = getch(); // Get user input
 		switch (ch)
 		{
-			// list scrolling			
+			// list scrolling
 		case KEY_UP:
 			current_row = std::max(0, current_row - 1);
 			start_row = std::min(current_row, start_row);
@@ -539,13 +541,13 @@ int console::internal::choose_cards(std::shared_ptr<sqlite3> db, const std::stri
 				}
 			}
 			break;
-			case 4:	// remove			
+			case 4:	// remove
 				if (cards_vec.empty())
 				{
 					break;
 				}
 				cards_vec.erase(std::next(cards_vec.begin(), current_row), std::next(cards_vec.begin(), current_row + 1));
-				cards_selection.erase(std::next(cards_selection.begin(), current_row), std::next(cards_selection.begin(), current_row + 1));				
+				cards_selection.erase(std::next(cards_selection.begin(), current_row), std::next(cards_selection.begin(), current_row + 1));
 				start_row = std::max(0, start_row - 1);
 				current_row = std::max(0, std::min(static_cast<int>(cards_vec.size()) - 1, current_row));
 				break;
@@ -598,7 +600,7 @@ int console::internal::choose_cards(std::shared_ptr<sqlite3> db, const std::stri
  * The user can navigate buttons for back, next, and exit.
  *
  * @param amount Reference to the DATATYPE variable representing the chosen amount.
- * @return The index of the selected action (button) when the user exits the amount selection interface. 
+ * @return The index of the selected action (button) when the user exits the amount selection interface.
  *
  * @tparam DATATYPE The data type used for representing the chosen amount.
  *
@@ -636,7 +638,7 @@ int console::internal::choose_amount(DATATYPE& amount)
 		printw("Estimated size: %s\n", size_str.c_str());
 		printw("Amount: %s", std::to_string(amount).c_str());
 
-		draw_buttons(buttons, curr_btn_idx); // Draw buttons at the bottom of the screen		
+		draw_buttons(buttons, curr_btn_idx); // Draw buttons at the bottom of the screen
 		refresh();
 		int ch = getch(); // Get user input
 		switch (ch)
@@ -709,7 +711,7 @@ int console::internal::choose_amount(DATATYPE& amount)
 		case VK_BACK:
 #else
 		case KEY_BACKSPACE:
-#endif		
+#endif
 			amount /= 10;
 			break;
 		default:
@@ -889,7 +891,7 @@ int console::internal::generate(const std::string& exp_path, const std::vector<C
 
 	int curr_btn_idx{};
 	int selected_action{};
-	timeout(250); // Set a timeout of 250 milliseconds (0.25 seconds) for getch()			
+	timeout(250); // Set a timeout of 250 milliseconds (0.25 seconds) for getch()
 
 	while (flag)
 	{
@@ -907,10 +909,10 @@ int console::internal::generate(const std::string& exp_path, const std::vector<C
     	const int bar_width = static_cast<int>(g_progress * width);
 		std::stringstream prog_stream;
 		prog_stream << "[" << std::string(bar_width, '#') << std::string(width - bar_width, ' ') << "] " << std::fixed << std::setprecision(0) << (g_progress * 100) << "%%";
-		
+
 		mvprintw(window_h - 3, 0, prog_stream.str().c_str());
 		refresh();
-		
+
 		int ch = getch(); // Get user input
 
 		if (ch == ERR)
@@ -969,7 +971,7 @@ int console::internal::generate(const std::string& exp_path, const std::vector<C
 					buttons[1].m_label = "Pause";
 				}
 				break;
-			case 0:	// Back				
+			case 0:	// Back
 			case 2:	// Exit
 			case 3:	// Stop
 				if (g_started)
@@ -1015,14 +1017,14 @@ int console::internal::generate(const std::string& exp_path, const std::vector<C
  * This function initializes the console, displays a banner, and guides the user through
  * a series of steps for managing cards, choosing the amount of data to generate, selecting
  * an output file, and initiating the data generation process. The user can exit at any step.
- * 
+ *
  * The function initializes the console environment and manages user interaction through a series of steps:
  *  - Open or create a database.
  *  - Display and choose cards from the database.
  *  - Choose the amount of data to generate and display estimation.
  *  - Choose the output file for exporting generated data.
- *  - Initiate the data generation process. 
- * 
+ *  - Initiate the data generation process.
+ *
  * @param version The version string of the application.
  * @param url The URL associated with the application.
  *
@@ -1079,7 +1081,7 @@ void console::run(const std::string& version, const std::string& url, const std:
 			choice = 1;
 			cards_selection = std::vector<bool>(cards_vec.size(), false);
 			break;
-		case 1:	// display database and choose cards			
+		case 1:	// display database and choose cards
 			//choice = choose_cards(db, db_path);
 			choice = console::internal::choose_cards(db, db_path, cards_vec, cards_selection);
 			break;

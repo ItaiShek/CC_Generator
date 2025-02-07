@@ -1,8 +1,9 @@
 #include "GUI.h"
 
-extern std::atomic<bool> g_paused;
-extern std::atomic<bool> g_started;
-extern std::atomic<float> g_progress;
+std::mt19937 File::gen(std::random_device{}());
+std::atomic<bool> g_paused{ false };
+std::atomic<bool> g_started{ false };
+std::atomic<float> g_progress{ 0.0f };
 
 /**
  * @brief Initializes a vector of Card objects from a database.
@@ -16,20 +17,20 @@ extern std::atomic<float> g_progress;
 std::vector<Card> initialize_cards_vec()
 {
     std::vector<Card> temp_vec{};
-    std::string db_path = "cards.db";    
+    std::string db_path = "cards.db";
 
     if (DB_API::check_file_exists(db_path) == false)
     {
         return temp_vec;
     }
-    
+
     std::shared_ptr<sqlite3> db{ DB_API::read_db(db_path) };
 
     if (db == nullptr)
     {
         return temp_vec;
     }
-    
+
     std::string err_msg{};
     DB_API::read_cards(db, temp_vec, err_msg);
 
@@ -53,23 +54,23 @@ public:
     }
 
     void update()
-    {        
+    {
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->WorkPos);
         ImGui::SetNextWindowSize(viewport->WorkSize);
 
         static bool disable_start_btn;
 
-        // ImGui content        
+        // ImGui content
         ImGui::Begin("MainWindow", NULL, m_window_flags);
 
         ImVec2 main_window_size{ ImGui::GetWindowSize() };
         ImVec2 popup_min_window_size{ ImVec2(main_window_size.x * 0.5f, main_window_size.y * 0.5f) };
-                
+
         static std::vector<Card> cards_vec{ initialize_cards_vec()};
         static std::vector<bool> cards_selection( cards_vec.size(), false );
         static int current_card{-1};
-        
+
         ImGui::BeginDisabled(g_started);
         // Child 1 - Database
         {
@@ -78,8 +79,8 @@ public:
             ImGui::BeginChild("Child_L", ImVec2(child_window_size.x * 0.5f, child_window_size.y), false, ImGuiWindowFlags_NoDecoration);
             // Child 1.1 - Database list
             {
-                ImGui::BeginChild("Child_L_1", ImVec2(0, ImGui::GetContentRegionAvail().y - ImGui::GetFrameHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);        
-                
+                ImGui::BeginChild("Child_L_1", ImVec2(0, ImGui::GetContentRegionAvail().y - ImGui::GetFrameHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
+
                 if (ImGui::BeginTable("cards_columns", 4, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
                 {
                     static std::array<const char*, 4> table_header{ "", "Issuer" ,"Length" ,"Prefixes" };
@@ -101,7 +102,7 @@ public:
                         const char* length{ length_str.c_str() };
                         const char* prefixes{ prefixes_str.c_str() };
                         if (db_filter.PassFilter(issuer) || db_filter.PassFilter(length) || db_filter.PassFilter(prefixes))
-                        {                            
+                        {
                             ImGui::TableNextRow();
                             ImGui::TableNextColumn();
                             // if you have a better and more efficient solution then please suggest it =)
@@ -113,22 +114,22 @@ public:
                             ImGui::TableNextColumn();
                             if (ImGui::Selectable(issuer, current_card == i, ImGuiSelectableFlags_SpanAllColumns))
                             {
-                                if (current_card == i) 
+                                if (current_card == i)
                                 {
-                                    current_card = -1;  // deselect                                    
+                                    current_card = -1;  // deselect
                                 }
                                 else
                                 {
                                     current_card = i;   // select
                                 }
                             }
-                            
+
                             ImGui::TableNextColumn();
                             ImGui::Text(length);
                             ImGui::TableNextColumn();
                             ImGui::Text(prefixes);
-                        }                        
-                        
+                        }
+
                     }
                     disable_start_btn = !disable_start_btn;
                     ImGui::EndTable();
@@ -147,8 +148,8 @@ public:
             ImGui::EndChild();
         }
         ImGui::EndDisabled();
-        
-        
+
+
         ImGui::SameLine();
 
         // Child 2 - Actions
@@ -171,7 +172,7 @@ public:
                 static std::string err_msg{};
                 static size_t action;
                 action = db_actions.size();
-                static constexpr const char* filters{ "Sqlite database files (*.db){.db},All files (*.*){.*}" };                
+                static constexpr const char* filters{ "Sqlite database files (*.db){.db},All files (*.*){.*}" };
 
                 ImVec2 window_size{ ImGui::GetContentRegionAvail() };
                 ImVec2 button_size{ -FLT_MIN,window_size.y * 0.175f };
@@ -189,7 +190,7 @@ public:
                     }
                     ImGui::EndTable();
                 }
-                
+
                 // Handle db actions
                 switch (action)
                 {
@@ -254,7 +255,7 @@ public:
                     }
                     ImGui::EndPopup();
                 }
-                
+
                 // open database
                 if (ImGuiFileDialog::Instance()->Display("OpenDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size))
                 {
@@ -319,7 +320,7 @@ public:
                     ImGuiFileDialog::Instance()->Close();
                     action = db_actions.size();
                 }
-                
+
                 // add new card
                 static bool first_time{ true };
                 static std::string issuer_add{};
@@ -385,7 +386,7 @@ public:
                     }
                     ImGui::EndPopup();
                 }
-                                
+
                 // edit card
                 ImGui::SetNextWindowSizeConstraints(ImVec2(main_window_size.x * 0.25f, main_window_size.y * 0.25f), ImVec2(FLT_MAX, FLT_MAX));
                 if (ImGui::BeginPopupModal("Edit"))
@@ -486,7 +487,7 @@ public:
                     static std::string f_time{ File::format_time<std::chrono::nanoseconds, DATATYPE>(std::chrono::duration_cast<std::chrono::nanoseconds>(m_duration * amount)) };
                     ImGui::DragScalar("##amount_slider", imgui_data_type, &amount, 1.0f, &min_amount, &max_amount, 0, ImGuiSliderFlags_AlwaysClamp);
                     static std::string size_str{ File::estimate_size(amount) };
-                    
+
                     // Calculate the total size of the file including newline characters
                     if(ImGui::IsItemEdited())
                     {
@@ -527,8 +528,8 @@ public:
                     ImVec2 window_size{ ImGui::GetContentRegionAvail() };
                     ImVec2 button_size{ ImVec2(window_size.x * 0.2f,window_size.y * 0.35f) };
 
-                    static std::string start_button_text{ "Start" };                    
-                    
+                    static std::string start_button_text{ "Start" };
+
                     ImGui::BeginDisabled(disable_start_btn);
                     if (ImGui::Button(start_button_text.c_str(), button_size))
                     {
@@ -558,7 +559,7 @@ public:
                             std::string exp_path = ImGuiFileDialog::Instance()->GetFilePathName();
                             static std::ofstream output_file;
                             output_file.open(exp_path.c_str(), std::ios::trunc);
-                            
+
                             if (output_file.is_open())
                             {
                                 start_button_text = "Pause";
@@ -574,7 +575,7 @@ public:
                         }
                         ImGuiFileDialog::Instance()->Close();
                     }
-                    
+
                     ImGui::SetNextWindowSizeConstraints(ImVec2(main_window_size.x * 0.25f, main_window_size.y * 0.25f), ImVec2(FLT_MAX, FLT_MAX));
                     if (ImGui::BeginPopupModal("File Error"))
                     {
@@ -589,7 +590,7 @@ public:
                         }
                         ImGui::EndPopup();
                     }
-                    
+
                     ImGui::SameLine();
                     ImGui::BeginDisabled(g_started == false);
                     static bool old_pause;
@@ -627,11 +628,11 @@ public:
                     {
                         g_paused = false;
                         start_button_text = "Start";
-                    }                    
+                    }
 
-                    // Calculate the Y position to align the progress bar                    
+                    // Calculate the Y position to align the progress bar
                     ImVec2 progress_bar_size{ -1, window_size.y * 0.35f };
-                    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + ImGui::GetContentRegionAvail().y - progress_bar_size.y);                                        
+                    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + ImGui::GetContentRegionAvail().y - progress_bar_size.y);
                     ImGui::ProgressBar(g_progress , progress_bar_size);
                 }
                 ImGui::EndChild();
@@ -688,14 +689,14 @@ public:
                     }
                     if (ImGui::IsItemClicked())
                     {
-                        
+
 #if defined(_WIN64) || defined(_WIN32)
                         static std::string open_url = "start " + m_url;
 #elif __linux__
                         static std::string open_url = "xdg-open " + m_url;
 #elif __APPLE__
                         static std::string open_url = "open " + m_url;
-#endif                                                
+#endif
                         system(open_url.c_str());
                     }
                     ImVec2 popup_window_size{ ImGui::GetWindowSize() };
@@ -723,7 +724,7 @@ private:
     ImGuiWindowFlags m_window_flags{};
     std::string m_title{};
     std::string m_url{};
-    std::string m_license{};    
+    std::string m_license{};
     std::chrono::nanoseconds m_duration{};
 };
 

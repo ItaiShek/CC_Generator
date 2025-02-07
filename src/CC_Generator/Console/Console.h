@@ -8,11 +8,10 @@
 #include <functional>
 
 #if defined(_WIN64) || defined(_WIN32)
+#define NOMINMAX
 #include <Windows.h>
 #include "curses.h"
-#define DLL_EXPORT __declspec(dllexport)
 #else
-#define DLL_EXPORT // Empty define for non-Windows platforms
 #include <ncurses.h>
 #include <linux/limits.h>
 #define MAX_PATH PATH_MAX
@@ -24,27 +23,14 @@
 #define DATATYPE unsigned int
 #endif
 
-#ifdef max
-#undef max
-#endif
-
-#ifdef min
-#undef min
-#endif
-
-std::mt19937 File::gen(std::random_device{}());
-
 // global variables
-std::atomic<bool> g_paused{ false };
-std::atomic<bool> g_started{ false };
-std::atomic<float> g_progress{ 0.0f };
+extern std::atomic<bool> g_paused;
+extern std::atomic<bool> g_started;
+extern std::atomic<float> g_progress;
 
 namespace console
 {
-	extern "C"
-	{
-		DLL_EXPORT void run(const std::string& version, const std::string& url, const std::string& license);
-	}
+	void run(const std::string& version, const std::string& url, const std::string& license);
 
 	// Represents a button with a label and associated action.
 	class Button

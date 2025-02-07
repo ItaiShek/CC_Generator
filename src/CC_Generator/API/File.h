@@ -68,7 +68,7 @@ public:
             return -1;
         }
 
-        std::uniform_int_distribution<int> dist(0, vec.size() - 1);
+        std::uniform_int_distribution<int> dist(0, static_cast<int>(vec.size() - 1));
         return vec[dist(gen)];
     }
 
@@ -129,7 +129,9 @@ public:
         // Write any remaining content in the stringstream
         if (g_started)
         {
-            int size = oss.tellp();
+            // int size = oss.tellp();
+            std::streamoff size = oss.tellp();
+
             if (size > 0)
             {
                 size -= 1;

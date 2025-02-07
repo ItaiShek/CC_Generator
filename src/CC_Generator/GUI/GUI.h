@@ -23,29 +23,24 @@
 #include "File.h"
 
 #if defined(_WIN64) || defined(_WIN32)
-#define DLL_EXPORT __declspec(dllexport)
-#else
-#define DLL_EXPORT // Empty define for non-Windows platforms
+#define NOMINMAX
 #endif
 
 #if defined(__x86_64) || defined(_M_X64)
-ImGuiDataType imgui_data_type = ImGuiDataType_U64;
+static ImGuiDataType imgui_data_type = ImGuiDataType_U64;
 #define DATATYPE ImU64
 #elif defined(__i386) || defined(_M_IX86)
-ImGuiDataType imgui_data_type = ImGuiDataType_U32;
+static ImGuiDataType imgui_data_type = ImGuiDataType_U32;
 #define DATATYPE ImU32
 #endif
 
-#ifdef max
-#undef max
-#endif
 
-std::mt19937 File::gen(std::random_device{}());
+// std::mt19937 File::gen(std::random_device{}());
 
 // global variables
-std::atomic<bool> g_paused{ false };
-std::atomic<bool> g_started{ false };
-std::atomic<float> g_progress{ 0.0f };
+extern std::atomic<bool> g_paused;
+extern std::atomic<bool> g_started;
+extern std::atomic<float> g_progress;
 
 namespace gui
 {
@@ -59,10 +54,7 @@ namespace gui
      * @param url A string containing the URL information.
      * @param license A string containing the license information.
      */
-    extern "C"
-    {
-        DLL_EXPORT void run(const std::string& version, const std::string& url, const std::string& license);
-    }
+    void run(const std::string& version, const std::string& url, const std::string& license);
 
     /**
     * @brief Template class for creating GUI applications using GLFW and ImGui.
