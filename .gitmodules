@@ -7,6 +7,3 @@
 [submodule "extern/glfw"]
 	path = extern/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "extern/PDCurses"]
-	path = extern/PDCurses
-	url = https://github.com/wmcbrine/PDCurses.git
