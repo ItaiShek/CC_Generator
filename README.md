@@ -1,35 +1,51 @@
-<!-- Badges -->
-[![](https://img.shields.io/github/v/release/ItaiShek/CC_Generator)](https://github.com/ItaiShek/CC_Generator/releases)
-![](https://img.shields.io/github/downloads/ItaiShek/CC_Generator/total?color=red)
-[![](https://img.shields.io/github/issues/ItaiShek/CC_Generator?color=yellow)](https://github.com/ItaiShek/CC_Generator/issues)
-[![](https://img.shields.io/github/license/ItaiShek/CC_Generator?label=license&color=green)](https://github.com/ItaiShek/CC_Generator/blob/main/LICENSE)
+# CC_Generator
 
-# Description
+Generate a bunch of random credit card numbers quickly and easily in your browser using WebAssembly.
 
-Generate a bunch of random credit card numbers quickly and easily.
+## Description
 
-![GUI](images/GUI.gif "GUI")
-
-![Console](images/Console.gif "Console")
+CC_Generator is a lightweight tool that generates random credit card numbers fast. It uses a C++ backend compiled to WebAssembly via Emscripten for performance, and a GUI built with Dear ImGui for ease of use.
 
 ## Installation
 
-### Direct download:
-[Windows](https://github.com/ItaiShek/CC_Generator/releases/latest/download/CC_Generator_win.zip)
+1. **Prerequisites:**
 
-[Linux](https://github.com/ItaiShek/CC_Generator/releases/latest/download/CC_Generator_linux.zip)
+   - Install [Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html).
+   - Make sure to activate Emscripten environment by running:
+     ```bash
+     source /path/to/emsdk/emsdk_env.sh
+     ```
 
-## Disclaimer
+2. **Clone this repository:**
+   ```bash
+   git clone https://github.com/ItaiShek/CC_Generator.git
+   cd CC_Generator
+   ```
 
-Every credit card that is generated with CC_Generator is **random and fake** and does not hold any value.
+3. **Prepare the database:**
+    ```bash
+    cp /path/to/Cards.db build/
+    ```
 
-Credit card numbers that are generated with CC_Generator follow the Luhn algorithm for validating identification numbers.
+4. **Building from source**
+    ```bash
+    mkdir build
+    cd build
+    emcmake cmake ..
+    cmake --build .
+    ```
 
-These credit cards are **not** to be used for harming or deceiving people.
+## Running
+Open `index.html` in a web browser that supports WebAssembly and WebGL2. You can serve the directory using a simple HTTP server:
 
-These credit cards are for educational and data testing purposes only.
+```bash
+cd build/CC_Generator
+python3 -m http.server 8080
+```
+Then navigate to http://localhost:8080/index.html
 
-I will not take **any responsibility** for damages that arise from misusing CC_Generator.
+## Performance Note
 
-## Credits
-* Names: [GitHub Gist - Elifiner](https://gist.github.com/elifiner/cc90fdd387449158829515782936a9a4)
+While the WebAssembly (WASM) version runs directly in the browser and is very convenient, it is significantly slower than the native desktop application version. This is due to the inherent overhead of running in a browser environment and limitations of the WebAssembly runtime compared to a compiled native binary.
+
+For heavy usage or maximum speed, I recommend using the desktop version.

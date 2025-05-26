@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "emscripten",
+      "displayName": "Emscripten WebAssembly",
+      "description": "Use emscripten to build WebAssembly",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/emscripten",
+      "toolchainFile": "C:/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}

@@ -8,10 +8,7 @@ add_library(api STATIC src/API/DB_API.cpp src/API/Card.cpp src/API/Date.cpp)
 target_include_directories(api PUBLIC include/API extern/sqlite)
 add_library(sqlite STATIC extern/sqlite/sqlite3.c)
 
-target_link_libraries(sqlite PRIVATE sqlite3)
-
 # GUI
-
 add_library(imgui STATIC
                 extern/DearImGui/imgui.cpp
                 extern/DearImGui/imgui_draw.cpp
@@ -30,46 +27,34 @@ add_library(imguifiledialog STATIC extern/ImGuiFileDialog/ImGuiFileDialog.cpp)
 target_include_directories(imguifiledialog PUBLIC extern/ImGuiFileDialog extern/DearImGui)
 target_link_libraries(imgui PUBLIC imguifiledialog)
 
-add_definitions(-D_GLFW_X11)
-add_library(glfw STATIC
-    extern/glfw/src/context.c
-    extern/glfw/src/init.c
-    extern/glfw/src/input.c
-    extern/glfw/src/monitor.c
-    extern/glfw/src/vulkan.c
-    extern/glfw/src/window.c
-    extern/glfw/src/platform.c
-    extern/glfw/src/null_init.c
-    extern/glfw/src/null_monitor.c
-    extern/glfw/src/null_window.c
-    extern/glfw/src/x11_init.c
-    extern/glfw/src/x11_monitor.c
-    extern/glfw/src/x11_window.c
-    extern/glfw/src/xkb_unicode.c
-    extern/glfw/src/glx_context.c
-    extern/glfw/src/egl_context.c
-    extern/glfw/src/osmesa_context.c
-    extern/glfw/src/linux_joystick.c
-    extern/glfw/src/posix_time.c
-    extern/glfw/src/posix_thread.c
-    extern/glfw/src/posix_module.c
-    extern/glfw/src/posix_poll.c
-    extern/glfw/src/null_joystick.c
-)
-target_link_libraries(glfw PRIVATE dl GL X11)
-
-
-target_include_directories(glfw PUBLIC extern/glfw/include)
-target_link_libraries(imgui PUBLIC glfw)
 
 add_library(gui STATIC src/GUI/GUI.cpp)
 target_include_directories(gui PUBLIC include/GUI extern/DearImGui/backends)
 target_link_libraries(gui PUBLIC api imgui)
-if (WIN32)
-    add_executable(CC_Generator_GUI WIN32 src/CC_Generator/gui_main.cpp)
-elseif(UNIX)
-    add_executable(CC_Generator_GUI src/CC_Generator/gui_main.cpp)
-endif()
+target_link_libraries(imgui PUBLIC glfw)
 
+# Emscripten
+set(CMAKE_EXECUTABLE_SUFFIX ".html")
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
+  -sUSE_GLFW=3 \
+  -sUSE_WEBGL2=1 \
+  -sALLOW_MEMORY_GROWTH=1 \
+  -sASYNCIFY \
+  -sFORCE_FILESYSTEM=1 \
+  --preload-file Cards.db \
+  --shell-file \"${CMAKE_SOURCE_DIR}/shell.html\" \
+  -sEXPORTED_FUNCTIONS=['_main'] \
+  -sEXPORTED_RUNTIME_METHODS=['ccall','cwrap']")
+
+add_executable(CC_Generator_GUI src/CC_Generator/gui_main.cpp)
+set_target_properties(CC_Generator_GUI PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CC_Generator
+)
 target_link_libraries(CC_Generator_GUI PRIVATE api gui sqlite)
 target_compile_features(CC_Generator_GUI PUBLIC cxx_std_20)
+add_custom_command(TARGET CC_Generator_GUI POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rename
+            $<TARGET_FILE:CC_Generator_GUI>
+            ${CMAKE_BINARY_DIR}/CC_Generator/index.html
+)

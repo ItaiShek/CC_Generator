@@ -1,3 +1,7 @@
+#ifdef __EMSCRIPTEN__
+#include "emscripten_funcs.h"
+#endif
+
 #include "GUI.h"
 #include "GUI_.h"
 #include "Date.h"
@@ -6,7 +10,13 @@ std::mt19937 File::m_gen(std::random_device{}());
 std::atomic<bool> g_paused{false};
 std::atomic<bool> g_started{false};
 std::atomic<float> g_progress{0.0f};
-std::string g_current_db_path = "cards.db";
+std::string g_current_db_path = "Cards.db";
+
+// emscripten flags
+bool g_emscripten_open_flag = false;
+bool g_emscripten_save_db_flag = false;
+bool g_emscripten_generate_flag = false;
+extern std::atomic<bool> export_finished;
 
 /**
  * @brief Initializes a vector of Card objects from a database.
@@ -64,8 +74,8 @@ public:
         m_window_flags |= ImGuiWindowFlags_NoMove;
         m_window_flags |= ImGuiWindowFlags_NoCollapse;
         m_window_flags |= ImGuiWindowFlags_NoTitleBar;
-        ImGui_ImplGlfw_InitForOpenGL(m_window, true);
         set_duration();
+        glfwSwapInterval(1); // idling
     }
 
     void update()
@@ -102,7 +112,7 @@ public:
                     for (const auto &header_col : table_header)
                     {
                         ImGui::TableNextColumn();
-                        ImGui::TextColored(ImVec4(255, 0, 0, 1), header_col);
+                        ImGui::TextColored(ImVec4(255, 0, 0, 1), "%s", header_col);
                     }
 
                     bool sel{};
@@ -140,9 +150,9 @@ public:
                             }
 
                             ImGui::TableNextColumn();
-                            ImGui::Text(length);
+                            ImGui::Text("%s", length);
                             ImGui::TableNextColumn();
-                            ImGui::Text(prefixes);
+                            ImGui::Text("%s", prefixes);
                         }
                     }
                     disable_start_btn = !disable_start_btn;
@@ -215,6 +225,9 @@ public:
                     break;
                 case 1: // open database
                 {
+#ifdef __EMSCRIPTEN__
+                    open_file_dialog("'.db'");
+#else
                     IGFD::FileDialogConfig config;
                     config.path = ".";
                     config.fileName = "";
@@ -225,10 +238,14 @@ public:
                         "Open Database", // vTitle
                         filters,         // vFilters
                         config);
+#endif
                 }
                 break;
                 case 2: // save database
                 {
+#ifdef __EMSCRIPTEN__
+                    g_emscripten_save_db_flag = true;
+#else
                     IGFD::FileDialogConfig config;
                     config.path = ".";
                     config.fileName = "";
@@ -239,6 +256,7 @@ public:
                         "Save Database", // vTitle
                         filters,         // vFilters
                         config);
+#endif
                 }
                 break;
                 case 3: // add new card
@@ -291,12 +309,18 @@ public:
                 }
 
                 // open database
-                if (ImGuiFileDialog::Instance()->Display("OpenDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size))
+                if (ImGuiFileDialog::Instance()->Display("OpenDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size) || g_emscripten_open_flag)
                 {
+
                     // action if OK
-                    if (ImGuiFileDialog::Instance()->IsOk())
+                    if (ImGuiFileDialog::Instance()->IsOk() || g_emscripten_open_flag)
                     {
+#ifdef __EMSCRIPTEN__
+                        std::string db_path = get_selected_file_path_from_js("selectedFilePath");
+                        g_emscripten_open_flag = false;
+#else
                         std::string db_path = ImGuiFileDialog::Instance()->GetFilePathName();
+#endif
 
                         if (DB_API::check_file_exists(db_path) == false)
                         {
@@ -328,13 +352,14 @@ public:
                         }
                     }
                     ImGuiFileDialog::Instance()->Close();
+
                     action = db_actions.size();
                 }
 
                 // save database
-                if (ImGuiFileDialog::Instance()->Display("SaveDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size))
+                if (ImGuiFileDialog::Instance()->Display("SaveDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size) || g_emscripten_save_db_flag)
                 {
-                    if (ImGuiFileDialog::Instance()->IsOk())
+                    if (ImGuiFileDialog::Instance()->IsOk() || g_emscripten_save_db_flag)
                     {
                         std::string db_path = ImGuiFileDialog::Instance()->GetFilePathName();
 
@@ -350,6 +375,12 @@ public:
                             if (DB_API::write_cards(db, cards_vec, err_msg) != 0)
                             {
                                 ImGui::OpenPopup("DB Error");
+                            }
+                            else
+                            {
+#ifdef __EMSCRIPTEN__
+                                download_file(g_current_db_path, "Cards.db", g_emscripten_save_db_flag);
+#endif
                             }
                         }
                     }
@@ -492,7 +523,7 @@ public:
                 {
                     ImVec2 popup_window_size{ImGui::GetWindowSize()};
                     ImVec2 button_size{ImVec2(popup_window_size.x * 0.3f, popup_window_size.y * 0.15f)};
-                    ImGui::TextWrapped(err_msg.c_str());
+                    ImGui::TextWrapped("%s", err_msg.c_str());
                     ImGui::SetCursorPos(ImVec2(popup_window_size.x / 2 - button_size.x / 2, popup_window_size.y - button_size.y * 2));
 
                     if (ImGui::Button("OK", button_size))
@@ -540,12 +571,12 @@ public:
                     // print estimated file size
                     ImGui::Text("Approximate size:");
                     ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(255, 0, 0, 1), size_str.c_str());
+                    ImGui::TextColored(ImVec4(255, 0, 0, 1), "%s", size_str.c_str());
 
                     // print estimated time
                     ImGui::Text("ETA:");
                     ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(255, 0, 0, 1), f_time.c_str());
+                    ImGui::TextColored(ImVec4(255, 0, 0, 1), "%s", f_time.c_str());
 
                     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal))
                     {
@@ -674,6 +705,9 @@ public:
                         }
                         else
                         {
+#ifdef __EMSCRIPTEN__
+                            g_emscripten_generate_flag = true;
+#else
                             IGFD::FileDialogConfig config;
                             config.path = ".";
                             config.fileName = "";
@@ -684,15 +718,21 @@ public:
                                 "Save Cards",                                       // vTitle
                                 "Text Documents (*.txt){.txt},All files (*.*){.*}", // vFilters
                                 config);
+#endif
                         }
                     }
                     ImGui::EndDisabled();
-
-                    if (ImGuiFileDialog::Instance()->Display("GenerateDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size))
+                    if (ImGuiFileDialog::Instance()->Display("GenerateDlg", ImGuiWindowFlags_NoCollapse, popup_min_window_size) || g_emscripten_generate_flag)
                     {
-                        if (ImGuiFileDialog::Instance()->IsOk())
+
+                        if (ImGuiFileDialog::Instance()->IsOk() || g_emscripten_generate_flag)
                         {
+#ifdef __EMSCRIPTEN__
+                            std::string exp_path = "/tmp/temp_output.txt";
+                            g_emscripten_generate_flag = false;
+#else
                             std::string exp_path = ImGuiFileDialog::Instance()->GetFilePathName();
+#endif
                             static std::ofstream output_file;
                             output_file.open(exp_path.c_str(), std::ios::trunc);
 
@@ -702,8 +742,13 @@ public:
                                 g_started = true;
                                 g_progress = 0.0f;
                                 std::shared_ptr<sqlite3> db{DB_API::read_db(g_current_db_path)};
+
+#ifdef __EMSCRIPTEN__
+                                File::start_export(cards_vec, cards_selection, amount, db, "/tmp/temp_output.txt");
+#else
                                 std::thread write_thread(&File::export_cards<DATATYPE>, std::ref(output_file), cards_vec, cards_selection, amount, db);
                                 write_thread.detach();
+#endif
                             }
                             else
                             {
@@ -712,6 +757,14 @@ public:
                         }
                         ImGuiFileDialog::Instance()->Close();
                     }
+#ifdef __EMSCRIPTEN__
+                    if (export_finished.load())
+                    {
+
+                        download_file("/tmp/temp_output.txt", "Cards_output.txt", g_emscripten_generate_flag); // dummy flag
+                        export_finished = false;
+                    }
+#endif
 
                     ImGui::SetNextWindowSizeConstraints(ImVec2(main_window_size.x * 0.25f, main_window_size.y * 0.25f), ImVec2(FLT_MAX, FLT_MAX));
                     if (ImGui::BeginPopupModal("File Error"))
@@ -799,6 +852,17 @@ public:
                         style_button_text = "Dark Mode";
                         ImGui::StyleColorsLight();
                     }
+
+#ifdef __EMSCRIPTEN__
+                    if (enable_dark_mode)
+                    {
+                        set_background_dark_mode();
+                    }
+                    else
+                    {
+                        set_background_light_mode();
+                    }
+#endif
                 }
 
                 ImGui::SameLine();
@@ -812,17 +876,21 @@ public:
                 ImGui::SetNextWindowSizeConstraints(popup_min_window_size, ImVec2(FLT_MAX, FLT_MAX));
                 if (ImGui::BeginPopupModal("About"))
                 {
-                    ImGui::Text(m_title.c_str());
+                    ImGui::Text("%s", m_title.c_str());
                     ImGui::Separator();
+#ifdef __EMSCRIPTEN__
+                    static std::string about_str = "An open-source tool designed to generate random credit card numbers. It operates offline, ensuring your privacy.\nThe database is stored locally in an SQLite3 file.\n\nThe software is released under the " + m_license + " license." + "\n\nThe online version is significantly slower than the desktop app (available in the url below).";
+#else
                     static std::string about_str = "An open-source tool designed to generate random credit card numbers. It operates offline, ensuring your privacy.\nThe database is stored locally in an SQLite3 file.\n\nThe software is released under the " + m_license + " license.";
-                    ImGui::TextWrapped(about_str.c_str());
+#endif
+                    ImGui::TextWrapped("%s", about_str.c_str());
 
                     ImVec2 cur_pos = ImGui::GetCursorPos();
-                    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), m_url.c_str());
+                    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s", m_url.c_str());
                     if (ImGui::IsItemHovered())
                     {
                         ImGui::SetCursorPos(cur_pos);
-                        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), m_url.c_str());
+                        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", m_url.c_str());
                     }
                     if (ImGui::IsItemClicked())
                     {
@@ -834,7 +902,13 @@ public:
 #elif __APPLE__
                         static std::string open_url = "open " + m_url;
 #endif
+#ifdef EMSCRIPTEN
+                        EM_ASM_({
+                                var url = UTF8ToString($0);
+                                window.open(url, '_blank'); }, m_url.c_str());
+#else
                         system(open_url.c_str());
+#endif
                     }
                     ImVec2 popup_window_size{ImGui::GetWindowSize()};
                     ImVec2 button_size{ImVec2(popup_window_size.x * 0.25f, popup_window_size.y * 0.1f)};
@@ -870,6 +944,9 @@ private:
     bool m_disable_name_option{false};
 };
 
+// The pointer is just for emscripten
+std::unique_ptr<App> app;
+
 /**
  * @brief Runs the GUI application with a specified version and URL.
  *
@@ -883,6 +960,26 @@ private:
 void gui::run(const std::string &version, const std::string &url, const std::string &license)
 {
     const std::string title{"CC_Generator - Version " + version};
-    App app{title, url, license, 1080, 640};
-    app.run();
+    app = std::make_unique<App>(title, url, license, 1080, 640);
+
+#if __EMSCRIPTEN__
+    static auto main_loop = []()
+    {
+        if (app)
+        {
+            if (!app->should_close())
+                app->run_frame();
+            else
+            {
+                emscripten_cancel_main_loop();
+                app.reset();
+            }
+        }
+    };
+
+    emscripten_set_main_loop(+main_loop, 0, 1);
+    app->startup();
+#else
+    app->run();
+#endif
 }
