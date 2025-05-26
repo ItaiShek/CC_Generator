@@ -11,6 +11,9 @@
 #include <string>
 #include <atomic>
 #include <thread>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 
 #include "sqlite3.h"
 #include "Card.h"
@@ -19,6 +22,7 @@
 extern std::atomic<bool> g_paused;
 extern std::atomic<bool> g_started;
 extern std::atomic<float> g_progress;
+std::atomic<bool> export_finished = false;
 
 /**
  * @struct date_struct
@@ -430,6 +434,143 @@ public:
 
         return std::to_string(size) + " [" + sizes[si] + "]";
     }
+
+#ifdef __EMSCRIPTEN__
+
+    /**
+     * @brief Holds the state for an ongoing export operation.
+     *
+     * This structure stores all necessary information required to manage
+     * the asynchronous export process, including output buffering,
+     * progress tracking, card selection, and file destination.
+     */
+    struct ExportState
+    {
+        std::ostringstream oss;          ///< Output buffer used to accumulate export content.
+        int i = 0;                       ///< Current export iteration index.
+        int amount;                      ///< Total number of cards to export.
+        std::vector<Card> cards_vec;     ///< Vector of available cards to export from.
+        std::vector<bool> selection_vec; ///< Selection vector indicating which cards are selected.
+        std::shared_ptr<sqlite3> db;     ///< Shared pointer to the SQLite database for name generation.
+        std::vector<int> indexes_vec;    ///< Precomputed list of selected indexes for efficient access.
+        std::string vfs_path;            ///< Virtual filesystem path where the output file will be written.
+    };
+
+    /**
+     * @brief Performs a single asynchronous step in the card export process.
+     *
+     * This function is designed to be repeatedly scheduled with `emscripten_async_call`
+     * to allow non-blocking export of card data to the virtual file system (VFS).
+     *
+     * It checks for pause and stop signals, writes data in chunks to avoid memory issues,
+     * and finalizes the export by flushing the remaining content once all items are processed.
+     *
+     * @param Unused A dummy pointer required by `emscripten_async_call`. Ignored in this implementation.
+     */
+    static void export_step(void *)
+    {
+        if (g_started == false || export_state == nullptr)
+            return;
+
+        constexpr int chunk = 4096;
+        auto &s = *export_state;
+
+        if (g_paused)
+        {
+            emscripten_async_call(export_step, nullptr, 250);
+            return;
+        }
+
+        if (s.i >= s.amount)
+        {
+            // Write any remaining content in the stringstream before closing file
+            std::streamoff size = s.oss.tellp();
+
+            if (size > 0)
+            {
+                size -= 1;
+                std::ofstream file(s.vfs_path, std::ios::app); // append mode
+                s.oss.str(s.oss.str().substr(0, size));
+                file << s.oss.str();
+                file.close();
+            }
+
+            export_finished = true;
+            g_progress = 1.0f;
+            g_started = false;
+            delete export_state;
+            export_state = nullptr;
+            return;
+        }
+
+        int rnd_idx = choose_random_index(s.indexes_vec);
+        s.cards_vec[rnd_idx].generate_card(s.oss);
+
+        if (m_cvv_flag)
+            Card::generate_cvv(m_delimiter, s.oss);
+        if (m_date_flag)
+            Card::generate_date(m_delimiter, m_date.start, m_date.end, s.oss);
+        if (m_name_flag && s.db)
+        {
+            std::string name = DB_API::get_random_name(s.db);
+            if (name.empty() == false)
+            {
+                s.oss << m_delimiter << name;
+            }
+        }
+
+        s.oss << "\n";
+
+        if (s.oss.tellp() > chunk)
+        {
+            std::ofstream file(s.vfs_path, std::ios::app);
+            file << s.oss.str().substr(0, chunk);
+            file.close();
+            s.oss.str(s.oss.str().substr(chunk));
+        }
+
+        g_progress = static_cast<float>(s.i) / s.amount;
+        s.i++;
+
+        emscripten_async_call(export_step, nullptr, 0); // Schedule next chunk
+    }
+
+    /**
+     * @brief Initializes and starts the asynchronous export process.
+     *
+     * This function prepares the internal export state, clears the target file in the virtual file system (VFS),
+     * and begins the asynchronous card export routine via `emscripten_async_call`.
+     *
+     * @param cards A vector of `Card` objects used to generate the exported data.
+     * @param selection A vector of booleans indicating which cards are selected for export.
+     * @param amount The number of cards to export.
+     * @param db A shared pointer to the SQLite3 database used for generating additional card data (e.g., names).
+     * @param vfs_path The VFS path where the export file will be written. This file is truncated at the beginning.
+     */
+    static void start_export(const std::vector<Card> &cards, const std::vector<bool> &selection, int amount, std::shared_ptr<sqlite3> db, const std::string &vfs_path)
+    {
+        // Overwrite (truncate) the file at the start
+        std::ofstream truncate_file(vfs_path);
+        truncate_file.close();
+
+        export_state = new ExportState{
+            std::ostringstream(std::ios_base::ate),
+            0,
+            amount,
+            cards,
+            selection,
+            db,
+            get_true_vec(selection),
+            vfs_path};
+
+        g_started = true;
+        export_finished = false;
+        emscripten_async_call(export_step, nullptr, 0);
+    }
+
+    static inline ExportState *export_state{nullptr};
+#endif
+
     static std::mt19937 m_gen;
     static inline date_struct m_date;
     static inline char m_delimiter{';'};

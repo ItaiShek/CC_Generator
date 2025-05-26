@@ -22,6 +22,10 @@ static ImGuiDataType imgui_data_type = ImGuiDataType_U64;
 #elif defined(__i386) || defined(_M_IX86)
 static ImGuiDataType imgui_data_type = ImGuiDataType_U32;
 #define DATATYPE ImU32
+#else
+// WASM
+static ImGuiDataType imgui_data_type = ImGuiDataType_U32;
+#define DATATYPE ImU32
 #endif
 
 // global variables
@@ -97,11 +101,16 @@ namespace gui
             ImGui::CreateContext();
 
             glfwMakeContextCurrent(m_window);
+            ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+
             ImGuiIO &io = ImGui::GetIO();
             (void)io;
 
+#ifdef __EMSCRIPTEN__
+            ImGui_ImplOpenGL3_Init("#version 300 es");
+#else
             ImGui_ImplOpenGL3_Init("#version 330");
-            glfwSwapInterval(1); // idling
+#endif
         }
 
         /**
@@ -132,32 +141,58 @@ namespace gui
             // Main loop
             while (!glfwWindowShouldClose(m_window))
             {
-                // Poll events and handle window close
-                glfwPollEvents();
-                if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-                {
-                    glfwSetWindowShouldClose(m_window, true);
-                }
-
-                // Start the ImGui frame
-                ImGui_ImplOpenGL3_NewFrame();
-                ImGui_ImplGlfw_NewFrame();
-                ImGui::NewFrame();
-
-                update();
-
-                // Rendering
-                ImGui::Render();
-                int display_w, display_h;
-                glfwGetFramebufferSize(m_window, &display_w, &display_h);
-                glViewport(0, 0, display_w, display_h);
-                glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
-                ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-                // Swap buffers
-                glfwSwapBuffers(m_window);
+                run_frame();
             }
+        }
+
+        /**
+         * @brief Checks whether the application window should close.
+         *
+         * This function queries the underlying GLFW window to determine if a close
+         * request has been made (e.g., by clicking the window close button).
+         *
+         * @return true if the window should close, false otherwise.
+         */
+        bool should_close() const
+        {
+            return glfwWindowShouldClose(m_window);
+        }
+
+        /**
+         * @brief Executes a single frame of the application loop.
+         *
+         * This function performs the following operations in order:
+         * - Polls window events (e.g., keyboard, mouse, window close).
+         * - Starts a new ImGui frame using OpenGL3 and GLFW backends.
+         * - Calls the `update()` method to build the ImGui interface.
+         * - Renders the ImGui draw data using OpenGL.
+         * - Swaps the front and back buffers to present the rendered frame.
+         */
+        void run_frame()
+        {
+            // Poll events and handle window close
+            glfwPollEvents();
+            if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            {
+            }
+            // Start the ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            update();
+
+            // Rendering
+            ImGui::Render();
+            int display_w, display_h;
+            glfwGetFramebufferSize(m_window, &display_w, &display_h);
+            glViewport(0, 0, display_w, display_h);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+            // Swap buffers
+            glfwSwapBuffers(m_window);
         }
 
         /**
