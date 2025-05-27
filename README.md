@@ -19,6 +19,10 @@ Generate a bunch of random credit card numbers quickly and easily.
 
 [Linux](https://github.com/ItaiShek/CC_Generator/releases/latest/download/CC_Generator_linux.zip)
 
+### Try the Online Version
+You can also try it in your browser (no installation needed), though it will run significantly slower than the desktop version:
+👉 https://ItaiShek.GitHub.io/CC_Generator
+
 ## Disclaimer
 
 Every credit card that is generated with CC_Generator is **random and fake** and does not hold any value.
