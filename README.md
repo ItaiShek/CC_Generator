@@ -30,9 +30,8 @@ CC_Generator is a lightweight tool that generates random credit card numbers fas
 4. **Building from source**
     ```bash
     mkdir build
-    cd build
-    emcmake cmake ..
-    cmake --build .
+    emcmake cmake -S . -B build
+    cmake --build build
     ```
 
 ## Running
