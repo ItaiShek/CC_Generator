@@ -21,6 +21,7 @@ Generate a bunch of random credit card numbers quickly and easily.
 
 ### Try the Online Version
 You can also try it in your browser (no installation needed), though it will run significantly slower than the desktop version:
+
 👉 https://ItaiShek.GitHub.io/CC_Generator
 
 ## Disclaimer
